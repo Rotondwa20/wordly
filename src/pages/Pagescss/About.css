@@ -1,0 +1,115 @@
+.about-background {
+  min-height: 100vh;
+  background-image: url("../../assets/background.png");
+  background-size: cover;
+  background-position: center;
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== NAVBAR (same style as Login) ===== */
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  z-index: 100;
+}
+
+.nav-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.nav-links span {
+  margin-right: 25px;
+    padding: 20px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.nav-links span:hover {
+  color: #00aaff;
+}
+
+/* ===== ABOUT CONTAINER ===== */
+.about-container {
+  width: 80%;
+  margin: 140px auto 60px auto;
+  padding: 30px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  color: #fff;
+}
+
+.about-title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+    color: #0339fc;
+
+}
+
+.about-intro {
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+  color: #f5f5f5;
+}
+
+/* ===== SECTIONS ===== */
+.about-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.about-card {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(6px);
+  text-align: left;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.about-card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.about-card h3 {
+  margin-bottom: 10px;
+  color: #0339fc;
+}
+
+.about-card p {
+  color: #ffffff;
+  line-height: 1.5;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  text-align: center;
+  padding: 15px;
+  color: #fff;
+  position: relative;
+  font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+}

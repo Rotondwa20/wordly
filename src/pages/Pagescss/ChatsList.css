@@ -1,0 +1,65 @@
+.chatslist-container {
+  padding: 20px;
+  background-color: #f4f4f9;
+  min-height: 100vh;
+}
+
+.chatslist-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+h2 {
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  color: #333;
+}
+
+.chat-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chat-card {
+  background-color: #fff;
+  padding: 15px 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chat-card:hover {
+  background-color: #e0e4ff;
+  transform: translateY(-2px);
+}
+
+.chat-info h3 {
+  margin: 0 0 6px 0;
+  font-size: 1.2rem;
+  color: #1a1a1a;
+}
+
+.chat-info .last-message {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #555;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}
+
+.chat-time {
+  font-size: 0.8rem;
+  color: #888;
+}
+.no-chats {
+  text-align: center;
+  color: #666;
+  margin-top: 50px;
+}

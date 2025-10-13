@@ -1,0 +1,104 @@
+
+/* Container */
+.editprofile-wrapper {
+  min-height: 100vh;
+  background-color: #f0fdfa; /* light mint background */
+  font-family: 'Helvetica', Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 2rem;
+}
+
+/* Profile Card */
+.editprofile-card {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+/* Header */
+.editprofile-card h1 {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+/* Form */
+.editprofile-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 1rem;
+}
+
+/* Profile Image */
+.editprofile-photo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #3b82f6;
+}
+
+.editprofile-placeholder {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+/* Inputs */
+.editprofile-form input[type="text"],
+.editprofile-form input[type="email"],
+.editprofile-form input[type="tel"] {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.editprofile-form input:focus {
+  border-color: #3b82f6;
+}
+
+.editprofile-form input[type="file"] {
+  margin-top: 0.5rem;
+}
+
+/* Button */
+.editprofile-btn {
+  background-color: #3b82f6;
+  color: white;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.editprofile-btn:hover {
+  background-color: #2563eb;
+}
+
+.editprofile-btn:disabled {
+  background-color: #93c5fd;
+  cursor: not-allowed;
+}

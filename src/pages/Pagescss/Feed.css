@@ -1,0 +1,245 @@
+/* Container */
+.feed-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  background-color: #f9fafb;
+  min-height: 100vh;
+}
+
+/* Search Section */
+.feed-search-section {
+  width: 100%;
+  max-width: 768px;
+  margin: 16px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.feed-search-input {
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: 9999px;
+  border: 1px solid #e5e7eb;
+  outline: none;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.feed-search-input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+/* Post Input */
+.feed-post-input {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #fff;
+  border-radius: 0.75rem;
+  margin-bottom: 16px;
+}
+
+.feed-post-input input {
+  flex: 1;
+  background-color: #f3f4f6;
+  padding: 10px 12px;
+  border-radius: 9999px;
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+}
+
+.feed-post-input button {
+  background-color: #2563eb;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.feed-post-input button:hover {
+  background-color: #1d4ed8;
+}
+
+/* Posts */
+.feed-posts {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.feed-post {
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 16px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.feed-post:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.feed-post h2 {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.feed-post h3 {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.feed-post p {
+  font-size: 0.875rem;
+  color: #4b5563;
+  line-height: 1.4;
+}
+
+.feed-post img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  margin-top: 8px;
+}
+
+/* Post Footer */
+.feed-post-footer {
+  display: flex;
+  gap: 24px;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.feed-post-footer span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.feed-post-footer span:hover {
+  color: #2563eb;
+}
+
+/* Comment Section */
+.feed-comment-section {
+  margin-top: 12px;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 12px;
+}
+
+.feed-comment-input {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.feed-comment-input input {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 9999px;
+  border: 1px solid #d1d5db;
+  outline: none;
+  font-size: 0.875rem;
+}
+
+.feed-comment-input button {
+  padding: 6px 12px;
+  border-radius: 9999px;
+  border: none;
+  background-color: #2563eb;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.feed-comment-input button:hover {
+  background-color: #1d4ed8;
+}
+
+/* Individual Comment */
+.feed-comment {
+  margin-bottom: 8px;
+  padding-left: 12px;
+  border-left: 2px solid #e5e7eb;
+  transition: all 0.2s;
+}
+
+.feed-comment p {
+  margin: 2px 0;
+  font-size: 0.875rem;
+}
+
+.feed-comment strong {
+  font-weight: 600;
+}
+
+/* Replies */
+.feed-reply {
+  margin-left: 16px;
+  padding-left: 8px;
+  border-left: 1px dashed #d1d5db;
+}
+
+.feed-reply p {
+  font-size: 0.85rem;
+}
+
+/* Reply Button */
+.feed-reply-btn {
+  font-size: 12px;
+  color: #2563eb;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 2px 0;
+  transition: color 0.2s;
+}
+
+.feed-reply-btn:hover {
+  color: #1d4ed8;
+}
+
+/* Comment & Replies Styling */
+.feed-comment p, .feed-reply p {
+  font-size: 0.875rem;
+  color: #374151;
+  line-height: 1.3;
+}
+
+.feed-comment strong, .feed-reply strong {
+  font-weight: 600;
+  color: #111827;
+}
+
+.feed-comment input, .feed-reply input {
+  font-size: 0.875rem;
+}
+
+.feed-comment button, .feed-reply button {
+  transition: all 0.2s;
+}
+
+.feed-comment button:hover, .feed-reply button:hover {
+  background-color: #1d4ed8;
+}

@@ -1,0 +1,96 @@
+.community-container {
+  padding: 20px;
+  max-width: 100%;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.add-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.add-btn:hover {
+  background-color: #0056b3;
+}
+
+.create-community {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width:80% ;
+  margin: 0 auto;
+}
+
+.create-community input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  
+  border-radius: 6px;
+}
+
+.create-community button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.community-list {
+  margin-top: 20px;
+  width: 80%  ;
+  margin: 20px auto 0 auto;
+}
+
+.community-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8f9fa;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.community-info h3 {
+  margin: 0;
+  font-size: 1.1em;
+}
+
+.community-info p {
+  margin: 4px 0 0 0;
+  font-size: 0.9em;
+  color: #555;
+}
+
+.join-btn {
+  background-color: #17a2b8;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.join-btn:hover {
+  background-color: #138496;
+}

@@ -1,0 +1,155 @@
+.register-background {
+  min-height: 100vh;
+  background-image: url("../../assets/background.png");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  align-items: center;
+  font-family: "Poppins", sans-serif;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  position: fixed;
+  top: 0;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  z-index: 10;
+}
+
+.nav-logo {
+  font-size: 1.6rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.nav-links span {
+  margin-right: 25px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.nav-links span:hover {
+  color: #00aaff;
+}
+
+/* ===== FORM CONTAINER ===== */
+.register-container {
+  width: 100%;
+  color: #ffffff;
+  max-width: 500px;
+  margin: 130px auto 60px;
+  padding: 30px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  color: #fff;
+}
+
+.register-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  margin-bottom: 6px;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.form-group input {
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: #00aaff;
+}
+
+/* ===== BUTTON ===== */
+.register-btn {
+  width: 100%;
+  background-color: #00aaff;
+  color: white;
+  font-size: 1.1rem;
+  padding: 12px 0;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.register-btn:hover {
+  background-color: #007acc;
+}
+
+/* ===== MESSAGES ===== */
+.error {
+  background-color: rgba(255, 0, 0, 0.1);
+  color: #ff4d4d;
+  padding: 10px 12px;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.success {
+  background-color: rgba(0, 255, 0, 0.1);
+  color: #00ff9d;
+  padding: 10px 12px;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* ===== LOGIN LINK ===== */
+.login-link {
+  text-align: center;
+  margin-top: 15px;
+  color: #ddd;
+}
+
+.login-link span {
+  color: #00aaff;
+  cursor: pointer;
+}
+
+.login-link span:hover {
+  text-decoration: underline;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  text-align: center;
+  padding: 15px;
+  color: #fff;
+  font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  width: 100%;
+}
