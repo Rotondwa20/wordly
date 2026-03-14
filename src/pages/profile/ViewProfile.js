@@ -10,9 +10,10 @@ import "../Pagescss/Profile.css";
 const ViewProfile = () => {
   const [userData, setUserData] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
-  const navigate = useNavigate();
   const user = auth.currentUser;
+  const navigate = useNavigate();
 
+  // Fetch user info and posts
   useEffect(() => {
     if (!user) return;
 
@@ -29,7 +30,7 @@ const ViewProfile = () => {
           setUserData({
             displayName: user.displayName || "User",
             email: user.email,
-            photoURL: user.photoURL,
+            photos: [],
           });
         }
       } catch (err) {
@@ -59,22 +60,25 @@ const ViewProfile = () => {
 
   if (!user) return <p className="message">Please log in to view profile.</p>;
 
+  // Handle likes
   const handleLike = async (post) => {
     if (post.likedUsers.includes(user.uid)) return;
+
     const postRef = doc(db, "posts", post.id);
     const updatedLikes = (post.likes || 0) + 1;
     const updatedLikedUsers = [...post.likedUsers, user.uid];
+
     await updateDoc(postRef, { likes: updatedLikes, likedUsers: updatedLikedUsers });
 
     setUserPosts((prev) =>
-      prev.map((p) =>
-        p.id === post.id ? { ...p, likes: updatedLikes, likedUsers: updatedLikedUsers } : p
-      )
+      prev.map((p) => (p.id === post.id ? { ...p, likes: updatedLikes, likedUsers: updatedLikedUsers } : p))
     );
   };
 
+  // Handle comments
   const handleComment = async (postId, commentText, resetInput) => {
     if (!commentText.trim()) return;
+
     const postRef = doc(db, "posts", postId);
     const newComment = {
       userId: user.uid,
@@ -83,13 +87,13 @@ const ViewProfile = () => {
       likes: 0,
       replies: [],
     };
+
     await updateDoc(postRef, { commentsArray: arrayUnion(newComment) });
 
     setUserPosts((prev) =>
-      prev.map((p) =>
-        p.id === postId ? { ...p, commentsArray: [...p.commentsArray, newComment] } : p
-      )
+      prev.map((p) => (p.id === postId ? { ...p, commentsArray: [...p.commentsArray, newComment] } : p))
     );
+
     resetInput();
   };
 
@@ -100,39 +104,35 @@ const ViewProfile = () => {
       {/* Profile Card */}
       <div className="profile-card-wrapper">
         <div className="profile-card">
-          {userData?.photoURL ? (
-            <img src={userData.photoURL} alt="Profile" className="profile-picture" />
+          {userData?.photos?.length > 0 ? (
+            <img src={userData.photos[0]} alt="Profile" className="profile-picture" />
           ) : (
             <div className="profile-picture placeholder">No Image</div>
           )}
           <h1 className="profile-name">{userData?.displayName}</h1>
           <p className="profile-email">{userData?.email}</p>
           {userData?.phoneNumber && <p className="profile-phone">📞 {userData.phoneNumber}</p>}
-          <button className="edit-button" onClick={() => navigate("/editprofile")}>Edit Profile</button>
+
+          <button className="edit-button" onClick={() => navigate("/editprofile")}>
+            Edit Profile
+          </button>
         </div>
       </div>
 
-      {/* Posts */}
+      {/* User Posts */}
       <div className="posts-wrapper">
         <h2>Your Posts</h2>
         {userPosts.length === 0 ? (
           <p className="no-posts">You haven’t posted anything yet.</p>
         ) : (
-          userPosts.map((post) => (
-            <PostCard
-              key={post.id}
-              post={post}
-              handleLike={handleLike}
-              handleComment={handleComment}
-              userData={userData}
-            />
-          ))
+          userPosts.map((post) => <PostCard key={post.id} post={post} handleLike={handleLike} handleComment={handleComment} userData={userData} />)
         )}
       </div>
     </div>
   );
 };
 
+// PostCard Component
 const PostCard = ({ post, handleLike, handleComment, userData }) => {
   const [commentText, setCommentText] = useState("");
   const [showComments, setShowComments] = useState(false);
@@ -143,6 +143,7 @@ const PostCard = ({ post, handleLike, handleComment, userData }) => {
       {post.text && <p className="post-text">{post.text}</p>}
       {post.image && <img src={post.image} alt="Post" className="post-image" />}
 
+      {/* Post Stats */}
       <div className="post-stats">
         <span onClick={() => handleLike(post)} style={{ cursor: "pointer" }}>
           <FiHeart /> {post.likes || 0}
@@ -155,6 +156,7 @@ const PostCard = ({ post, handleLike, handleComment, userData }) => {
         </span>
       </div>
 
+      {/* Comments */}
       {showComments && (
         <div className="post-comments">
           <div className="comment-input">
@@ -164,10 +166,9 @@ const PostCard = ({ post, handleLike, handleComment, userData }) => {
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
             />
-            <button onClick={() => handleComment(post.id, commentText, () => setCommentText(""))}>
-              Comment
-            </button>
+            <button onClick={() => handleComment(post.id, commentText, () => setCommentText(""))}>Comment</button>
           </div>
+
           {post.commentsArray?.map((c, idx) => (
             <div key={idx} className="comment-item">
               <strong>{c.userName}:</strong> {c.text}
