@@ -13,13 +13,20 @@ const EditProfile = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [photos, setPhotos] = useState([]); // Array of Base64 images
+  const [photos, setPhotos] = useState([]);
+  const [location, setLocation] = useState("");
+  const [occupation, setOccupation] = useState("");
+  const [hobbies, setHobbies] = useState([]);
+  const [interests, setInterests] = useState([]);
+  const [bio, setBio] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [photoLoading, setPhotoLoading] = useState(false);
 
+  // Fetch current user data
   useEffect(() => {
     if (!user) return;
+
     const fetchData = async () => {
       try {
         const docSnap = await getDoc(doc(db, "users", user.uid));
@@ -30,11 +37,17 @@ const EditProfile = () => {
           setEmail(data.email || user.email);
           setPhoneNumber(data.phoneNumber || "");
           setPhotos(data.photos || []);
+          setLocation(data.location || "");
+          setOccupation(data.occupation || "");
+          setHobbies(data.hobbies || []);
+          setInterests(data.interests || []);
+          setBio(data.bio || "");
         }
       } catch (err) {
         console.error("Failed to fetch user data:", err);
       }
     };
+
     fetchData();
   }, [user]);
 
@@ -52,6 +65,11 @@ const EditProfile = () => {
         email,
         phoneNumber,
         photos,
+        location,
+        occupation,
+        hobbies,
+        interests,
+        bio,
       });
 
       alert("Profile updated successfully!");
@@ -62,7 +80,7 @@ const EditProfile = () => {
     setLoading(false);
   };
 
-  // Convert file to Base64 and compress if needed
+  // Handle photo upload
   const handlePhotoUpload = (e) => {
     if (!e.target.files[0] || !user) return;
 
@@ -80,32 +98,24 @@ const EditProfile = () => {
         let width = img.width;
         let height = img.height;
 
-        // Resize keeping aspect ratio
-        if (width > height) {
-          if (width > MAX_WIDTH) {
-            height *= MAX_WIDTH / width;
-            width = MAX_WIDTH;
-          }
-        } else {
-          if (height > MAX_HEIGHT) {
-            width *= MAX_HEIGHT / height;
-            height = MAX_HEIGHT;
-          }
+        if (width > height && width > MAX_WIDTH) {
+          height *= MAX_WIDTH / width;
+          width = MAX_WIDTH;
+        } else if (height > MAX_HEIGHT) {
+          width *= MAX_HEIGHT / height;
+          height = MAX_HEIGHT;
         }
 
-        // Draw to canvas
         const canvas = document.createElement("canvas");
         canvas.width = width;
         canvas.height = height;
         const ctx = canvas.getContext("2d");
         ctx.drawImage(img, 0, 0, width, height);
 
-        // Convert to Base64 (jpeg) with compression
-        let base64String = canvas.toDataURL("image/jpeg", 0.7); // 70% quality
+        let base64String = canvas.toDataURL("image/jpeg", 0.7);
 
-        // Reduce further if too large
-        while (base64String.length / 1024 > 1024) { // >1MB
-          base64String = canvas.toDataURL("image/jpeg", 0.6); // reduce quality
+        while (base64String.length / 1024 > 1024) {
+          base64String = canvas.toDataURL("image/jpeg", 0.6);
         }
 
         try {
@@ -129,6 +139,7 @@ const EditProfile = () => {
       <div className="editprofile-card">
         <h1>Edit Profile</h1>
         <form onSubmit={handleUpdate} className="editprofile-form">
+
           {/* Photo Section */}
           <div className="editprofile-photo-section">
             {photoLoading ? (
@@ -143,11 +154,20 @@ const EditProfile = () => {
             <input type="file" accept="image/*" onChange={handlePhotoUpload} />
           </div>
 
-          {/* Input Fields */}
+          {/* Basic Info */}
           <input type="text" placeholder="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
           <input type="text" placeholder="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} />
           <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
           <input type="tel" placeholder="Phone Number" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
+
+          {/* Additional Info */}
+          <input type="text" placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} />
+          <input type="text" placeholder="Occupation" value={occupation} onChange={(e) => setOccupation(e.target.value)} />
+          <input type="text" placeholder="Hobbies (comma separated)" value={hobbies.join(", ")} 
+                 onChange={(e) => setHobbies(e.target.value.split(",").map(h => h.trim()))} />
+          <input type="text" placeholder="Interests (comma separated)" value={interests.join(", ")} 
+                 onChange={(e) => setInterests(e.target.value.split(",").map(i => i.trim()))} />
+          <textarea placeholder="Bio" value={bio} onChange={(e) => setBio(e.target.value)} />
 
           <button type="submit" disabled={loading} className="editprofile-btn">
             {loading ? "Updating..." : "Update Profile"}

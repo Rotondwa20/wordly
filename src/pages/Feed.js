@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { FiHeart, FiMessageCircle, FiShare2, FiPlus } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-
 import { db } from "../Firebase/Firebase";
 import {
   collection,
@@ -18,6 +17,7 @@ import {
 } from "firebase/firestore";
 
 import Navbar from "../components/NavBar";
+import "./Pagescss/Feed.css";
 
 const Feed = () => {
   const navigate = useNavigate();
@@ -25,7 +25,6 @@ const Feed = () => {
   const [posts, setPosts] = useState([]);
   const [visibleCount, setVisibleCount] = useState(10);
   const [searchText, setSearchText] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("All");
   const [timeFilter, setTimeFilter] = useState("All");
 
   const user =
@@ -36,7 +35,6 @@ const Feed = () => {
       photoURL: "",
     };
 
-  /* ---------------- FETCH POSTS WITH USER PHOTOS ---------------- */
   const fetchPosts = async () => {
     try {
       const postsQuery = query(collection(db, "posts"), orderBy("createdAt", "desc"));
@@ -53,10 +51,10 @@ const Feed = () => {
               const userData = userDoc.data();
               userPhoto = userData.photos?.[0] || "";
               postData.userName =
-                `${userData.firstName || ""} ${userData.lastName || ""}`.trim() || postData.userName;
+                `${userData.firstName || ""} ${userData.lastName || ""}`.trim();
             }
           } catch (err) {
-            console.error("Error fetching post author photo:", err);
+            console.log("Error fetching user photo");
           }
 
           return {
@@ -76,18 +74,8 @@ const Feed = () => {
   };
 
   useEffect(() => {
-    // Fetch posts once on page load
     fetchPosts();
   }, []);
-
-  // Refresh posts only if 30min filter is selected
-  useEffect(() => {
-    if (timeFilter === "30min") {
-      fetchPosts();
-    }
-  }, [timeFilter]);
-
-  /* ---------------- FILTER POSTS ---------------- */
 
   const filterPosts = (postsList) => {
     let filtered = [...postsList];
@@ -100,10 +88,6 @@ const Feed = () => {
           post?.title?.toLowerCase().includes(text) ||
           post?.userName?.toLowerCase().includes(text)
       );
-    }
-
-    if (categoryFilter !== "All") {
-      filtered = filtered.filter((post) => post.category === categoryFilter);
     }
 
     if (timeFilter !== "All") {
@@ -125,56 +109,26 @@ const Feed = () => {
       });
     }
 
-    const now = new Date();
-    const recentPosts = filtered.filter((post) => {
-      const created = post?.createdAt?.seconds
-        ? new Date(post.createdAt.seconds * 1000)
-        : post?.createdAt?.toDate?.();
-      return created && now - created <= 5 * 60 * 1000;
-    });
-
-    const otherPosts = filtered.filter((post) => !recentPosts.includes(post));
-    otherPosts.sort(() => Math.random() - 0.5);
-
-    return [...recentPosts, ...otherPosts];
+    return filtered;
   };
 
   const displayedPosts = filterPosts(posts).slice(0, visibleCount);
   const showMorePosts = () => setVisibleCount((prev) => prev + 10);
 
-  /* ---------------- UI ---------------- */
-
   return (
-    <div style={{ position: "relative", minHeight: "100vh", paddingBottom: "80px" }}>
+    <div className="feed-page">
       <Navbar onSearch={setSearchText} />
+      <div className="feed-header">
+  <h2>🔥 Stay Updated! Explore the Latest Buzz from Everyone 🔥</h2>
+  <p>Check out trending posts, hottest stories, and what your friends are talking about!</p>
+</div>
 
-      {/* Filters */}
-      <div
-        style={{
-          padding: "16px",
-          display: "flex",
-          gap: "12px",
-          marginLeft: "42rem",
-          borderRadius: "8px",
-          backgroundColor: "#fff",
-        }}
-      >
-        <select
-          value={categoryFilter}
-          onChange={(e) => setCategoryFilter(e.target.value)}
-          style={{ padding: "4px 8px", border: "1px solid #2563eb", borderRadius: "6px" }}
-        >
-          <option value="All">All Categories</option>
-          <option value="Tech">Tech</option>
-          <option value="Lifestyle">Lifestyle</option>
-          <option value="News">News</option>
-          <option value="Entertainment">Entertainment</option>
-        </select>
-
+      {/* TIME FILTER */}
+      <div className="feed-filters">
         <select
           value={timeFilter}
           onChange={(e) => setTimeFilter(e.target.value)}
-          style={{ padding: "4px 8px", border: "1px solid #2563eb", borderRadius: "6px" }}
+          className="feed-select"
         >
           <option value="All">All Time</option>
           <option value="30min">Last 30 min</option>
@@ -185,50 +139,25 @@ const Feed = () => {
         </select>
       </div>
 
-      {/* Posts */}
-      <div style={{ padding: "16px", width:"80%", margin:"auto" }}>
+      <div className="feed-posts">
         {displayedPosts.length === 0 ? (
-          <p style={{ color: "#6b7280" }}>No posts found!</p>
+          <p className="no-posts">No posts found</p>
         ) : (
-          displayedPosts.map((post) => <PostItem key={post.id} post={post} user={user} navigate={navigate} />)
+          displayedPosts.map((post) => (
+            <PostItem key={post.id} post={post} user={user} navigate={navigate} />
+          ))
         )}
 
         {visibleCount < filterPosts(posts).length && (
-          <button
-            onClick={showMorePosts}
-            style={{
-              marginTop: "12px",
-              padding: "8px 16px",
-              borderRadius: "6px",
-              border: "none",
-              backgroundColor: "#2563eb",
-              color: "#fff",
-              cursor: "pointer",
-            }}
-          >
+          <button className="feed-show-more" onClick={showMorePosts}>
             Show More
           </button>
         )}
       </div>
 
-      {/* Floating Button */}
-      <div style={{ position: "fixed", bottom: "24px", right: "24px", zIndex: 50 }}>
-        <button
-          onClick={() => navigate("/writeblog")}
-          style={{
-            width: "56px",
-            height: "56px",
-            borderRadius: "50%",
-            backgroundColor: "#2563eb",
-            border: "none",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
-            cursor: "pointer",
-          }}
-        >
-          <FiPlus size={24} color="#fff" />
+      <div className="feed-float-btn">
+        <button onClick={() => navigate("/writeblog")} className="float-btn">
+          <FiPlus size={24} />
         </button>
       </div>
     </div>
@@ -236,28 +165,26 @@ const Feed = () => {
 };
 
 /* ---------------- POST ITEM ---------------- */
-
 const PostItem = ({ post, user, navigate }) => {
   const [postState, setPostState] = useState(post);
-  const [showMore, setShowMore] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [commentText, setCommentText] = useState("");
+  const [showMoreText, setShowMoreText] = useState(false);
 
-  const maxLength = 150;
   const isLiked = postState.likedUsers.includes(user.id);
-
+  const maxLength = 1400;
   const displayedText =
     !postState.text
       ? ""
       : postState.text.length <= maxLength
       ? postState.text
-      : showMore
+      : showMoreText
       ? postState.text
       : postState.text.slice(0, maxLength) + "...";
 
   const handleLike = async () => {
     const postRef = doc(db, "posts", postState.id);
-    let likedUsers = postState.likedUsers || [];
+    let likedUsers = [...postState.likedUsers];
     let newLikes = postState.likes || 0;
 
     if (isLiked) {
@@ -266,7 +193,6 @@ const PostItem = ({ post, user, navigate }) => {
     } else {
       likedUsers.push(user.id);
       newLikes++;
-
       if (postState.userId !== user.id) {
         await addDoc(collection(db, "notifications"), {
           receiverId: postState.userId,
@@ -291,71 +217,92 @@ const PostItem = ({ post, user, navigate }) => {
       userName: `${user.firstName} ${user.lastName}`,
       text: commentText,
       likes: 0,
-      replies: [],
     };
-
     await updateDoc(postRef, { commentsArray: arrayUnion(newComment) });
-    setPostState({ ...postState, commentsArray: [...(postState.commentsArray || []), newComment] });
+    setPostState({
+      ...postState,
+      commentsArray: [...postState.commentsArray, newComment],
+    });
     setCommentText("");
   };
 
   const formatDate = (createdAt) => {
-    if (!createdAt) return "Just now";
-    const date = createdAt.seconds ? new Date(createdAt.seconds * 1000) : createdAt.toDate();
+    if (!createdAt) return "";
+    const date = createdAt.seconds
+      ? new Date(createdAt.seconds * 1000)
+      : createdAt.toDate();
     return date.toLocaleString();
   };
 
   return (
-    <div style={{ border: "1px solid #e5e7eb", borderRadius: "8px", marginBottom: "16px", padding: "12px" }}>
-      {/* Profile Header */}
-      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+    <div className="post-item">
+      {/* PROFILE */}
+      <div
+        className="post-header"
+        onClick={() => navigate(`/viewprofile/${postState.userId}`)}
+      >
         {postState.userPhoto ? (
-          <img src={postState.userPhoto} alt="Profile" style={{ width: "40px", height: "40px", borderRadius: "50%", objectFit: "cover" }} />
+          <img src={postState.userPhoto} alt="Profile" className="post-avatar" />
         ) : (
-          <div style={{ width: "40px", height: "40px", borderRadius: "50%", backgroundColor: "#ccc", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold" }}>
-            {postState.userName ? postState.userName.charAt(0) : "U"}
+          <div className="post-avatar-placeholder">
+            {postState.userName?.charAt(0)}
           </div>
         )}
-
-        <div>
-          <h3 style={{ margin: 0 }}>{postState.userName || "Unknown User"}</h3>
-          <p style={{ margin: 0, fontSize: "0.7rem", color: "#555" }}>{formatDate(postState.createdAt)}</p>
-        </div>
+        <h3 className="post-username">{postState.userName}</h3>
+        <p className="post-date">{formatDate(postState.createdAt)}</p>
       </div>
 
-      {/* Title */}
+      {/* IMAGE */}
+      {postState.image && (
+        <img
+          src={postState.image}
+          alt="Post"
+          className="post-image"
+          onClick={() =>
+            navigate(`/viewblog/${postState.id}`, { state: { post: postState } })
+          }
+        />
+      )}
+
+      {/* TITLE */}
       {postState.title && (
-        <h4 style={{ cursor: "pointer", marginTop: "8px" }} onClick={() => navigate(`/viewblog/${postState.id}`, { state: { post: postState } })}>
+        <h4
+          className="post-title"
+          onClick={() =>
+            navigate(`/viewblog/${postState.id}`, { state: { post: postState } })
+          }
+        >
           {postState.title}
         </h4>
       )}
 
-      {/* Text */}
-      
-      <p style={{ cursor: "pointer" }} onClick={() => navigate(`/viewblog/${postState.id}`, { state: { post: postState } })}>
+      {/* TEXT */}
+      <p
+        className="post-text"
+        onClick={() =>
+          navigate(`/viewblog/${postState.id}`, { state: { post: postState } })
+        }
+      >
         {displayedText}
         {postState.text?.length > maxLength && (
           <span
+            className="see-more"
             onClick={(e) => {
               e.stopPropagation();
-              setShowMore(!showMore);
+              setShowMoreText(!showMoreText);
             }}
-            style={{ color: "#2563eb", marginLeft: "5px" }}
           >
-            {showMore ? "See Less" : "See More"}
+            {showMoreText ? "See Less" : "See More"}
           </span>
         )}
       </p>
 
-      {/* Post Image */}
-      {postState.image && <img src={postState.image} alt="Post" style={{ width: "100%", borderRadius: "8px", marginTop: "8px", cursor: "pointer" }} onClick={() => navigate(`/viewblog/${postState.id}`, { state: { post: postState } })} />}
-
-      {/* Actions */}
-      <div style={{ display: "flex", gap: "16px", marginTop: "8px" }}>
-        <span onClick={handleLike} style={{ cursor: "pointer" }}>
+      {/* ACTIONS */}
+      <div className="post-actions">
+        <span onClick={handleLike}>
           <FiHeart color={isLiked ? "red" : "black"} /> {postState.likes || 0}
         </span>
-        <span onClick={() => setShowComments(!showComments)} style={{ cursor: "pointer" }}>
+        <span onClick={() => setShowComments(!showComments)}>
           <FiMessageCircle /> {postState.commentsArray?.length || 0}
         </span>
         <span>
@@ -363,37 +310,27 @@ const PostItem = ({ post, user, navigate }) => {
         </span>
       </div>
 
-      {/* Comments */}
+      {/* COMMENTS */}
       {showComments && (
-        <div style={{ marginTop: "8px" }}>
-          <div style={{ display: "flex", gap: "8px", marginBottom: "8px" }}>
-            <input type="text" placeholder="Write a comment..." value={commentText} onChange={(e) => setCommentText(e.target.value)} style={{ flex: 1, padding: "4px 8px", borderRadius: "6px", border: "1px solid #d1d5db" }} />
-            <button onClick={handleComment} style={{ padding: "4px 12px", borderRadius: "6px", backgroundColor: "#2563eb", color: "#fff", border: "none" }}>
-              Comment
-            </button>
+        <div className="post-comments">
+          <div className="comment-input-container">
+            <input
+              type="text"
+              placeholder="Write a comment"
+              value={commentText}
+              onChange={(e) => setCommentText(e.target.value)}
+            />
+            <button onClick={handleComment}>Post</button>
           </div>
-          {postState.commentsArray?.map((c, idx) => <CommentItem key={idx} comment={c} />)}
+          {postState.commentsArray?.map((c, i) => (
+            <div key={i} className="comment-item">
+              <strong>{c.userName}</strong> {c.text}
+            </div>
+          ))}
         </div>
       )}
     </div>
   );
 };
-
-/* ---------------- COMMENT ITEM ---------------- */
-
-const CommentItem = ({ comment }) => (
-  <div style={{ marginBottom: "8px", paddingLeft: "16px" }}>
-    <p style={{ margin: 0 }}>
-      <strong>{comment.userName}:</strong> {comment.text} <FiHeart style={{ cursor: "pointer" }} /> {comment.likes || 0}
-    </p>
-    {comment.replies?.map((reply, i) => (
-      <div key={i} style={{ paddingLeft: "16px", marginTop: "4px" }}>
-        <p style={{ margin: 0 }}>
-          <strong>{reply.userName}:</strong> {reply.text}
-        </p>
-      </div>
-    ))}
-  </div>
-);
 
 export default Feed;

@@ -1,0 +1,121 @@
+.view-profile-container {
+  background-color: #ffffff;
+  padding: 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.profile-card-wrapper {
+  margin-bottom: 30px;
+}
+
+.profile-card {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  width:80%;
+  margin:auto;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  align-items: flex-start;
+}
+
+.profile-picture-container {
+  flex-shrink: 0;
+}
+
+.profile-picture {
+  width: 150px;
+  height: 150px; /* square */
+  object-fit: cover;
+  border-radius: 8px;
+  background-color: #ddd;
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.profile-name {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.profile-location,
+.profile-hobbies,
+.profile-followers,
+.profile-bio {
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.profile-actions {
+  margin-top: 10px;
+}
+
+.edit-button,
+.message-button,
+.follow-button {
+  padding: 8px 15px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.follow-button.following {
+  background-color: #6397ff;
+  color: white;
+}
+
+.posts-wrapper {
+  margin-top: 20px;
+  width: 80%;
+  margin: auto;
+}
+.posts-wrapper.h2 {
+  margin-bottom: 15px;
+  margin-top: 15px;
+  font-size: 1rem;
+  color: #6397ff;
+ 
+}
+
+.post-card {
+  background-color: #fff;
+  
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.post-stats {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.comment-input {
+  display: flex;
+  margin-top: 10px;
+}
+
+.comment-input input {
+  flex: 1;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.comment-input button {
+  margin-left: 5px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #6397ff;
+  color: white;
+}

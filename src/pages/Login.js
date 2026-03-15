@@ -1,140 +1,148 @@
 /* eslint-disable */
 import React, { useState } from "react";
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, googleProvider, db } from "../Firebase/Firebase";
-import { useNavigate } from "react-router-dom";
-import { doc, getDoc } from "firebase/firestore";
+import { signInWithEmailAndPassword, signInWithPopup, createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import "./Pagescss/Login.css";
 
-const Login = () => {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({ email: "", password: "" });
+const AuthPage = () => {
+  const [isRegister, setIsRegister] = useState(false);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    dob: "",
+    phoneNumber: "",
+    confirmPassword: "",
+  });
   const [message, setMessage] = useState({ type: "", text: "" });
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  // Save logged-in user to localStorage
-  const saveUserToLocal = (user, firstName = "Guest", lastName = "") => {
-    const loggedInUser = {
-      id: user.uid,
-      email: user.email,
-      firstName,
-      lastName,
-    };
-    localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
-  };
-
-  // Login with email/password
   const handleEmailLogin = async (e) => {
     e.preventDefault();
     setMessage({ type: "", text: "" });
-
     try {
       const userCredential = await signInWithEmailAndPassword(auth, formData.email, formData.password);
       const user = userCredential.user;
-
-      // Fetch firstName & lastName from Firestore
       const userDoc = await getDoc(doc(db, "users", user.uid));
       const userData = userDoc.exists() ? userDoc.data() : {};
-      const firstName = userData.firstName || "Guest";
-      const lastName = userData.lastName || "";
-
-      saveUserToLocal(user, firstName, lastName);
-
+      localStorage.setItem(
+        "loggedInUser",
+        JSON.stringify({ id: user.uid, email: user.email, firstName: userData.firstName || "Guest", lastName: userData.lastName || "" })
+      );
       setMessage({ type: "success", text: "Login successful! 🎉" });
-      setTimeout(() => navigate("/Feed"), 1500);
+      setTimeout(() => window.location.reload(), 1500); // redirect to Feed
     } catch (error) {
-      console.log(error);
       setMessage({ type: "error", text: "Invalid email or password." });
     }
   };
 
-  // Login with Google
   const handleGoogleLogin = async () => {
     setMessage({ type: "", text: "" });
-
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
-
-      let firstName = "Guest";
-      let lastName = "";
-
-      if (user.displayName) {
-        const parts = user.displayName.split(" ");
-        firstName = parts[0];
-        lastName = parts.slice(1).join(" ");
-      }
-
-      saveUserToLocal(user, firstName, lastName);
+      const nameParts = user.displayName ? user.displayName.split(" ") : ["Guest"];
+      localStorage.setItem(
+        "loggedInUser",
+        JSON.stringify({ id: user.uid, email: user.email, firstName: nameParts[0], lastName: nameParts.slice(1).join(" ") })
+      );
       setMessage({ type: "success", text: "Logged in with Google! 🎉" });
-      setTimeout(() => navigate("/Feed"), 1500);
+      setTimeout(() => window.location.reload(), 1500);
     } catch (error) {
-      console.log(error);
       setMessage({ type: "error", text: "Google login failed. Try again." });
     }
   };
 
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setMessage({ type: "", text: "" });
+
+    if (!formData.firstName || !formData.lastName || !formData.dob || !formData.phoneNumber || !formData.email || !formData.password || !formData.confirmPassword) {
+      setMessage({ type: "error", text: "All fields are required." });
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      setMessage({ type: "error", text: "Passwords do not match." });
+      return;
+    }
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+      const user = userCredential.user;
+      await setDoc(doc(db, "users", user.uid), {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        dob: formData.dob,
+        phoneNumber: formData.phoneNumber,
+        email: formData.email,
+        createdAt: new Date().toISOString(),
+      });
+      setMessage({ type: "success", text: "Registration successful! You can now login." });
+      setIsRegister(false);
+      setFormData({ email: "", password: "", firstName: "", lastName: "", dob: "", phoneNumber: "", confirmPassword: "" });
+    } catch (error) {
+      setMessage({ type: "error", text: error.message });
+    }
+  };
+
   return (
-    <div className="background">
-      <nav className="navbar">
-        <h1 className="nav-logo" onClick={() => navigate("/")}>Wordly</h1>
-        <div className="nav-links">
-          <span onClick={() => navigate("/")}>Home</span>
-          <span onClick={() => navigate("/about")}>About</span>
-          <span onClick={() => navigate("/register")}>Register</span>
+    <div className="landing-background">
+      <div className="landing-container">
+        {/* LEFT SIDE */}
+        <div className="landing-left">
+          <div className="landing-logo">
+            <div className="logo-icon">W</div>
+            <h1 className="logo-text">WORDLY</h1>
+          </div>
+          <h2>Welcome to Wordly</h2>
+          <p>{isRegister ? "Create your account and start sharing amazing blogs!" : "Discover, share, and connect with amazing blogs from all around the world."}</p>
+          <img
+            src="https://images.unsplash.com/photo-1519389950473-47ba0277781c"
+            alt="Blogging Illustration"
+            className="landing-image"
+          />
         </div>
-      </nav>
 
-      <div className="login-container">
-        <h2 className="login-title">Welcome Back to Wordly</h2>
+        {/* RIGHT SIDE FORM */}
+        <div className="landing-right">
+          <h2 className="login-title">{isRegister ? "Create Your Account" : "Login to Your Account"}</h2>
+          {message.text && <p className={message.type === "error" ? "error" : "success"}>{message.text}</p>}
 
-        {message.text && (
-          <p className={message.type === "error" ? "error" : "success"}>
-            {message.text}
+          {isRegister ? (
+            <form onSubmit={handleRegister} className="login-form">
+              <div className="form-group"><label>First Name</label><input type="text" name="firstName" value={formData.firstName} onChange={handleChange} /></div>
+              <div className="form-group"><label>Last Name</label><input type="text" name="lastName" value={formData.lastName} onChange={handleChange} /></div>
+              <div className="form-group"><label>Date Of Birth</label><input type="date" name="dob" value={formData.dob} onChange={handleChange} /></div>
+              <div className="form-group"><label>Phone Number</label><input type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} /></div>
+              <div className="form-group"><label>Email</label><input type="email" name="email" value={formData.email} onChange={handleChange} /></div>
+              <div className="form-group"><label>Password</label><input type="password" name="password" value={formData.password} onChange={handleChange} /></div>
+              <div className="form-group"><label>Confirm Password</label><input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} /></div>
+              <button type="submit" className="login-btn">Register</button>
+            </form>
+          ) : (
+            <>
+              <form onSubmit={handleEmailLogin} className="login-form">
+                <div className="form-group"><label>Email</label><input type="email" name="email" value={formData.email} onChange={handleChange} /></div>
+                <div className="form-group"><label>Password</label><input type="password" name="password" value={formData.password} onChange={handleChange} /></div>
+                <button type="submit" className="login-btn">Login</button>
+              </form>
+              <div className="divider">OR</div>
+              <button onClick={handleGoogleLogin} className="google-btn">Sign in with Google</button>
+            </>
+          )}
+
+          <p className="signup-link">
+            {isRegister ? (
+              <>Already have an account? <span onClick={() => setIsRegister(false)}>Login here</span></>
+            ) : (
+              <>Don’t have an account? <span onClick={() => setIsRegister(true)}>Register here</span></>
+            )}
           </p>
-        )}
-
-        <form onSubmit={handleEmailLogin} className="login-form">
-          <div className="form-group">
-            <label>Email Address</label>
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              placeholder="Enter your password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <button type="submit" className="login-btn">Login</button>
-        </form>
-
-        <div className="divider">OR</div>
-
-        <button onClick={handleGoogleLogin} className="google-btn">
-          Sign in with Google
-        </button>
-
-        <p className="signup-link">
-          Don’t have an account?{" "}
-          <span onClick={() => navigate("/register")}>Register here</span>
-        </p>
+        </div>
       </div>
 
       <footer className="footer">
@@ -144,4 +152,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AuthPage;

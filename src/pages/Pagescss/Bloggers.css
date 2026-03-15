@@ -1,0 +1,147 @@
+/* =================================
+   PAGE LAYOUT
+================================= */
+.bloggers-page {
+  width: 100%;
+  
+  font-family: "Segoe UI", sans-serif;
+  background-color: #ffffff;
+  min-height: 100vh;
+}
+
+/* =================================
+   TABS
+================================= */
+.tabs {
+  width: 75%;
+  margin: auto;
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  padding: 8px 16px;
+ flex: 1;
+  padding: 10px 0;
+  border: none;
+  background-color: transparent; /* remove background */
+  color: #333;
+  font-weight: 600;
+    font-size: 1 rem;
+
+  border-radius: 0; /* remove rounded background */
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border-bottom: 3px solid transparent;
+}
+
+
+.tabs button.active {
+  border-bottom: 2px solid #007bff; /* underline for active tab */
+  color: #007bff; /* optional: make text same color as underline */
+}
+
+.tabs button:hover {
+  color: #0056b3; /* subtle hover effect */
+}
+
+/* =================================
+   USERS LIST
+================================= */
+.users-list {
+  width: 75%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* =================================
+   USER ITEM
+================================= */
+.user-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+/* =================================
+   AVATAR
+================================= */
+.user-avatar img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  object-fit: cover;
+}
+
+.avatar-placeholder {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* =================================
+   USER INFO
+================================= */
+.user-info {
+  flex-grow: 1;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.user-stats {
+  font-size: 13px;
+  color: #666;
+  margin-top: 2px;
+}
+
+/* =================================
+   ACTION BUTTONS
+================================= */
+.user-action button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.follow-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.follow-btn:hover {
+  background-color: #0056b3;
+}
+
+.unfollow-btn {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+.unfollow-btn:hover {
+  background-color: #cc0000;
+}

@@ -1,65 +1,159 @@
+/* ChatsList.css */
+
+/* Container for the entire chats page */
 .chatslist-container {
-  padding: 20px;
-  background-color: #f4f4f9;
+  background-color:#ffffff;
   min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
 }
 
+/* Wrapper for the chats content */
 .chatslist-wrapper {
   max-width: 900px;
-  margin: 0 auto;
+  margin: 20px auto;
+  padding: 10px 15px;
+  display: flex;
+  flex-direction: column;
 }
 
-h2 {
-  margin-bottom: 20px;
-  font-size: 1.8rem;
+/* Tabs for switching between Community and Private chats */
+.chat-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #ddd;
+}
+
+.chat-tabs button {
+  flex: 1;
+  padding: 10px 0;
+  border: none;
+  background-color: transparent; /* remove background */
   color: #333;
+  font-weight: 600;
+    font-size: 1 rem;
+
+  border-radius: 0; /* remove rounded background */
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border-bottom: 3px solid transparent; /* default invisible underline */
 }
 
+.chat-tabs button.active {
+  color: #6397ff;
+  border-bottom: 2px solid #6397ff; /* underline for active tab */
+}
+
+.chat-tabs button:hover {
+  color: #6397ff;
+}
+
+/* Message when no chats are available */
+.no-chats {
+  text-align: center;
+  color: #777;
+  margin-top: 50px;
+  font-size: 1rem;
+}
+
+/* Container for chat cards */
 .chat-cards {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
+/* Individual chat card */
 .chat-card {
-  background-color: #fff;
-  padding: 15px 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  padding: 12px 15px;
+  border-radius: 10px;
   cursor: pointer;
   transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .chat-card:hover {
-  background-color: #e0e4ff;
-  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Avatar styles */
+.chat-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background-color: #d0d0d0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: white;
+  font-size: 1.2rem;
+  margin-right: 12px;
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-initials {
+  text-transform: uppercase;
+}
+
+/* Chat info (name, last message, location) */
+.chat-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .chat-info h3 {
-  margin: 0 0 6px 0;
-  font-size: 1.2rem;
-  color: #1a1a1a;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
 }
 
 .chat-info .last-message {
-  margin: 0;
-  font-size: 0.95rem;
+  margin: 2px 0;
+  font-size: 0.9rem;
   color: #555;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 300px;
 }
 
-.chat-time {
+.chat-info .user-location {
   font-size: 0.8rem;
-  color: #888;
+  color: #999;
+  margin-top: 2px;
 }
-.no-chats {
-  text-align: center;
-  color: #666;
-  margin-top: 50px;
+
+/* Time of last message */
+.chat-time {
+  font-size: 0.75rem;
+  color: #999;
+  margin-left: 10px;
+  flex-shrink: 0;
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+  .chat-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .chat-time {
+    margin-left: 0;
+    margin-top: 5px;
+  }
 }

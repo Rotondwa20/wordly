@@ -1,144 +1,213 @@
-*{
-  margin:0;
-  padding:0;
-  box-sizing: border-box;
-}
-.background {
+/* ===========================
+   GENERAL BACKGROUND & CONTAINER
+=========================== */
+.landing-background {
   min-height: 100vh;
-  background-image: url("../../assets/background.png");
+  width: 100%;
+  font-family: "Segoe UI", sans-serif;
+  background-color: #f4f6fb;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  background-size: cover;
-  background-position: center;
-  font-family: "Poppins", sans-serif;
-  position: relative;
-}
-
-/* ===== NAVBAR ===== */
-.navbar {
-  width: 100%;
-  display: flex;
-  height: 50px;
-  justify-content: space-between;
   align-items: center;
-  padding: 20px;
-  position: fixed;
-  box-shadow: 1px 1px 10px rgba(36, 31, 31, 0.319) ;
-  top: 0;
-  left: 0;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-  color: #fff;
-  z-index: 100;
 }
 
-.nav-logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  cursor: pointer;
+.landing-container {
+  display: flex;
+  gap: 80px;
+  padding: 50px 20px;
+  width: 100%;
+  justify-content: center;
+
+  /* IMPORTANT: keep both sides fixed */
+  align-items: flex-start; 
 }
 
-.nav-links span {
-  padding: 20px;
-  cursor: pointer;
-  transition: color 0.3s ease;
-  margin-right: 25px;
-  font-weight: 500px;
+/* ===========================
+   LEFT SIDE CONTENT
+=========================== */
+.landing-left {
+  flex: 0 0 40%;
+  max-width: 500px;
+
+  display: flex;
+  flex-direction: column;
+
+  /* remove vertical centering so it doesn't move */
+  justify-content: flex-start;
 }
 
-.nav-links span:hover {
-  color: #00aaff;
-}
-
-/* ===== LOGIN CONTAINER ===== */
-.login-container {
-  width: 40%;
-  margin: 120px auto 40px auto;
-  padding: 30px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  color: #fff;
-}
-
-.login-title {
+/* ===========================
+   LOGO
+=========================== */
+.landing-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 20px;
 }
 
+.logo-icon {
+  background-color: #2563eb;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2563eb;
+  letter-spacing: 1px;
+}
+
+.landing-left h2 {
+  font-size: 36px;
+  margin-bottom: 20px;
+  line-height: 1.2;
+  color: #1f2937;
+}
+
+.landing-left p {
+  font-size: 18px;
+  margin-bottom: 30px;
+  line-height: 1.6;
+  color: #4b5563;
+}
+
+.landing-image {
+  width: 100%;
+  border-radius: 15px;
+  object-fit: cover;
+  margin-top: 20px;
+}
+
+/* ===========================
+   RIGHT SIDE FORM
+=========================== */
+.landing-right {
+  flex: 0 0 40%;
+  max-width: 420px;
+
+  background-color: #fff;
+  padding: 40px 30px;
+  border-radius: 15px;
+
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+
+  display: flex;
+  flex-direction: column;
+
+  /* allow the form to extend downward */
+  height: auto;
+
+  margin-left: 70px;
+}
+
+/* ===========================
+   FORM TITLE
+=========================== */
+.login-title {
+  font-size: 28px;
+  margin-bottom: 35px;
+  color: #1f2937;
+  text-align: center;
+}
+
+/* ===========================
+   FORM GROUP
+=========================== */
 .form-group {
-  margin-bottom: 15px;
-  text-align: left;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
 }
 
 .form-group label {
-  display: block;
-  margin-bottom: 5px;
-  color: #ddd;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #285999;
 }
 
 .form-group input {
   width: 100%;
-  padding: 10px;
-  border: none;
+  padding: 12px 10px;
+  border: 1px solid #2563eb;
   border-radius: 8px;
+  font-size: 16px;
+  color: #1f2937;
+  background-color: #fff;
   outline: none;
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+.form-group input:focus {
+  border-color: #1d4ed8;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+/* ===========================
+   BUTTONS
+=========================== */
 .login-btn,
 .google-btn {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
+  margin-top: 10px;
   border: none;
   border-radius: 8px;
-  color: white;
-  font-weight: bold;
+  font-weight: 600;
   cursor: pointer;
-  margin-top: 10px;
-  transition: background 0.3s ease;
+  transition: all 0.2s ease-in-out;
 }
 
 .login-btn {
-  background-color: #007bff;
-}
-
-.google-btn {
-  background-color: #db4437;
+  background-color: #4f46e5;
+  color: #fff;
 }
 
 .login-btn:hover {
-  background-color: #0069d9;
+  background-color: #4338ca;
+}
+
+.google-btn {
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  color: #374151;
 }
 
 .google-btn:hover {
-  background-color: #c1351d;
+  background-color: #f3f4f6;
 }
 
+/* ===========================
+   DIVIDER
+=========================== */
 .divider {
+  text-align: center;
   margin: 15px 0;
   font-weight: bold;
-  color: #ccc;
+  color: #6b7280;
 }
 
-.error {
-  color: #ff4d4d;
-  margin-bottom: 10px;
-}
-
-.success {
-  color: #00ff88;
-  margin-bottom: 10px;
+/* ===========================
+   SIGNUP LINK
+=========================== */
+.signup-link {
+  text-align: center;
+  margin-top: 15px;
+  color: #374151;
 }
 
 .signup-link span {
-  color: #00aaff;
+  color: #4f46e5;
   cursor: pointer;
   font-weight: 600;
 }
@@ -147,15 +216,60 @@
   text-decoration: underline;
 }
 
-/* ===== FOOTER ===== */
+/* ===========================
+   SUCCESS / ERROR
+=========================== */
+.success {
+  color: #16a34a;
+  margin-bottom: 12px;
+}
+
+.error {
+  color: #dc2626;
+  margin-bottom: 12px;
+}
+
+/* ===========================
+   FOOTER
+=========================== */
 .footer {
   text-align: center;
-  padding: 10px;
-  height: 40px;
-  padding: 15px;
-  color: #fff;
-  font-size: 0.9rem;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px);
-  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 20px;
+  font-size: 14px;
+}
+
+.footer p {
+  margin: 0;
+  color: #455060;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+@media (max-width: 1024px) {
+  .landing-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .landing-left,
+  .landing-right {
+    flex: 0 0 90%;
+    max-width: 90%;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .landing-left h2 {
+    font-size: 28px;
+  }
+
+  .landing-left p {
+    font-size: 16px;
+  }
+
+  .login-title {
+    font-size: 24px;
+  }
 }
